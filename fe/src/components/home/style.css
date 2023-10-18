@@ -1,0 +1,62 @@
+.home-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 450px;
+    margin-bottom: 10px;
+    /* background-color: #0976e3; */
+}
+
+.camera-container {
+    flex: 2;
+    background-color: #d4dfe9;
+    min-height: 400px;
+    border-radius: 10px;
+    height: fit-content;
+    position: relative;
+    margin-left: 10px;
+}
+
+.name-title {
+    margin: 0;
+    margin-bottom: 5px;
+    color: #0976e3;
+    padding-left: 10px;
+    padding-top: 3px;
+}
+
+.edit-camera-container {
+    position: absolute;
+    width: 100%;
+    top: 0;
+
+}
+
+.camera {
+    background-color: black;
+    height: 380px;
+}
+
+.log-container {
+    flex: 1.5;
+    min-height: 400px;
+    margin-right: 10px;
+    position: relative;
+    border-radius: 10px;
+    margin-left: 5px;
+}
+
+.edit-log {
+    background-color: #0984e3;
+    border-radius: 10px;
+}
+
+.title-log {
+    color: #d4dfe9;
+}
+
+.log {
+    height: 380px;
+    overflow-y: auto;
+    background-color: #e0dad8;
+}
