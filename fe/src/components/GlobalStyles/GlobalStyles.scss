@@ -1,0 +1,28 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,100&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+:root {
+    --primary: rgb(247, 83, 110);
+    --layout-width: 1150px;
+    --layout-height: 60px;
+    --back: transparent linear-gradient(180deg, #7fd7f2 0%, rgb(27, 105, 151) 100%) 0% 0% no-repeat padding-box;
+    --add: transparent linear-gradient(180deg, #64e952 0%, rgb(6, 190, 67) 100%) 0% 0% no-repeat padding-box;
+    --border: #03c5db;
+    --delete: transparent linear-gradient(180deg, #f27777 0%, rgb(254, 32, 32) 100%) 0% 0% no-repeat padding-box;
+    --edit: transparent linear-gradient(180deg, #f9b052 0%, rgb(255, 132, 0) 100%) 0% 0% no-repeat padding-box;
+}
+html {
+    font-size: 62.5%;
+}
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    text-decoration: none;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizeSpeed;
+}
