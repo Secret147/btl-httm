@@ -1,10 +1,10 @@
-package com.httm.logisticbe;
+package drowsiness.server;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LogisticBeApplicationTests {
+class ServerApplicationTests {
 
 	@Test
 	void contextLoads() {

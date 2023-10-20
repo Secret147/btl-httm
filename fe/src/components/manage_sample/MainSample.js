@@ -3,20 +3,45 @@ import face from '../../images/000_1OC3DT_jpg.rf.7d83eba8fc52d85ab05399f142df218
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import { api_get_sample_eye_states, api_get_sample_face_detects } from '../../config/Api';
 function MainSample() {
     const [typeSample, setTypeSample] = useState(null)
+    const [samples, setSamples] = useState([])
     const navi = useNavigate();
 
     useEffect(() => {
-        console.log(sessionStorage.getItem('typeSample'))
-        setTypeSample(sessionStorage.getItem('typeSample'))
+        let type = sessionStorage.getItem('typeSample')
+        // console.log(sessionStorage.getItem('typeSample'))
+        setTypeSample(type)
+        if (type === '1') {
+            getSamples(api_get_sample_face_detects)
+        } else if (type === '2') {
+            getSamples(api_get_sample_eye_states)
+        }
     }, [])
+
+    const getSamples = (api) => {
+        fetch(api)
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data['data'])
+                setSamples(data)
+            })
+            .catch(err => console.log(err))
+    }
     const handleSelectTypeSample = (e) => {
-        setTypeSample(e.target.value)
-        sessionStorage.setItem('typeSample', e.target.value)
+        let select = e.target.value
+        setTypeSample(select)
+        sessionStorage.setItem('typeSample', select)
+        if (select === '1') {
+            getSamples(api_get_sample_face_detects)
+        } else if (select === '2') {
+            setSamples(api_get_sample_eye_states)
+        } else {
+            setSamples([])
+        }
     }
     const handleClickAdd = () => {
-        console.log('a')
         if (typeSample === null) {
             alert('Please choose type sample!')
             return
@@ -51,183 +76,16 @@ function MainSample() {
             </div>
             <div className="sample-list-container">
                 <div className="sample-list">
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-                    <Link to={`/sample`}>
-                        <div className='sample-image'>
-                            <img src={face} alt='face'></img>
-                            <p>face1</p>
-                        </div>
-                    </Link>
-
+                    {
+                        samples.map((sample) => (
+                            <Link to={`/sample/${sample.id}`}>
+                                <div className='sample-image'>
+                                    <img src={face} alt='face'></img>
+                                    <p>{sample.name}</p>
+                                </div>
+                            </Link>
+                        ))
+                    }
 
                 </div>
 

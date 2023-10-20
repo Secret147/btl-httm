@@ -14,7 +14,7 @@ function App() {
           <Route path="/" element={<Layout></Layout>}>
             <Route path="" element={<Home></Home>}></Route>
             <Route path='/manage-sample' element={<MainSample></MainSample>}></Route>
-            <Route path='/sample' element={<SampleDetail></SampleDetail>}></Route>
+            <Route path='/sample/:id' element={<SampleDetail></SampleDetail>}></Route>
             <Route path='/add-sample' element={<AddSample></AddSample>}></Route>
           </Route>
         </Routes>

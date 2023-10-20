@@ -64,6 +64,13 @@
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     background: linear-gradient(to right, #0984e3, #489aec);
     color: aliceblue;
+    transition: box-shadow 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+}
+
+.btnEdit:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    transform: scale(1.03);
 }
 
 .search-sample {
@@ -73,7 +80,7 @@
 }
 
 .search-sample input {
-    padding: 3px;
+    padding: 8px;
     width: 20vw;
     max-width: 25vw;
     border-radius: 5px;
@@ -82,7 +89,7 @@
     margin: 0;
     height: 30px;
     margin-right: 5px;
-    background-color: rgb(247, 243, 240);
+    background-color: rgb(235, 243, 248);
     box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -117,7 +124,7 @@ button {
     margin-top: 20px;
     border-radius: 5px;
     min-height: 300px;
-    background-color: antiquewhite;
+    background-color: rgb(209, 243, 245);
 }
 
 .sample-image p {

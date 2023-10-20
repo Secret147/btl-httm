@@ -8,6 +8,7 @@ function AddSample() {
     useEffect(() => {
         setTypeSample(sessionStorage.getItem('typeSample'))
     }, [])
+
     return (
         <div className="main-sample-container">
             <h3>Add sample</h3>
