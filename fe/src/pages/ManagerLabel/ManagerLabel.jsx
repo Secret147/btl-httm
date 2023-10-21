@@ -8,15 +8,42 @@ import {
     faPenToSquare,
     faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Back from '../../components/BackButton/Back';
+import axios from '../../service/axios';
 
 const cx = classNames.bind(styles);
 
 function ManagerLabel() {
     const [alert, setAlert] = useState(false);
     const [search, setSearch] = useState('');
-    const handleDeleteLabel = () => {
+    const [labels, setLabels] = useState([]);
+    const [deleteId, setDeleteId] = useState();
+
+    const getAllLabel = async () => {
+        try {
+            const res = await axios.get('/alllabel');
+            setLabels(res.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    useEffect(() => {
+        getAllLabel();
+    }, []);
+    const deleteLabel = async () => {
+        const res = await axios.delete(`/deletelabel/${deleteId}`);
+        if (res.status === 200) {
+            setDeleteId(null);
+            setAlert(false);
+            getAllLabel();
+        } else {
+            alert('Delete fail!');
+        }
+    };
+    const handleDeleteLabel = (id) => {
         setAlert(true);
+        setDeleteId(id);
     };
     const handleTest = () => {
         setSearch('Nham mat');
@@ -32,7 +59,12 @@ function ManagerLabel() {
                             </div>
                             <div className={cx('alert_button')}>
                                 <div className={cx('alert_button_box')}>
-                                    <div className={cx('alert_button_accept')}>
+                                    <div
+                                        className={cx('alert_button_accept')}
+                                        onClick={() => {
+                                            deleteLabel();
+                                        }}
+                                    >
                                         <p>Đồng ý</p>
                                     </div>
                                     <div
@@ -50,14 +82,7 @@ function ManagerLabel() {
                 </div>
             ) : (
                 <div className={cx('contain_box')}>
-                    <div
-                        className={cx('back')}
-                        onClick={() => {
-                            window.location.href = '/';
-                        }}
-                    >
-                        <FontAwesomeIcon icon={faArrowLeft} />
-                    </div>
+                    <Back></Back>
                     <div className={cx('main')}>
                         <div className={cx('main_container')}>
                             <div className={cx('search')}>
@@ -91,197 +116,83 @@ function ManagerLabel() {
                             </div>
                             <div className={cx('table_label')}>
                                 <div className={cx('table_box')}>
-                                    <div className={cx('item_table')}>
-                                        <div className={cx('table_label')}>
-                                            <div className={cx('item_main')}>
-                                                <div
-                                                    className={cx('item_left')}
-                                                    onClick={() => {
-                                                        window.location.href = '/detaillabel';
-                                                    }}
-                                                >
-                                                    <div className={cx('item_left_main')}>
-                                                        <p>Khuôn mặt</p>
-                                                    </div>
-                                                </div>
-                                                <div className={cx('button_box')}>
-                                                    <div className={cx('item_right')}>
-                                                        <div className={cx('item_right_delete')}>
+                                    {labels &&
+                                        labels.length > 0 &&
+                                        labels.map((label) => {
+                                            return (
+                                                <div className={cx('item_table')} key={label.id}>
+                                                    <div className={cx('table_label')}>
+                                                        <div className={cx('item_main')}>
                                                             <div
-                                                                className={cx('delete_button')}
-                                                                onClick={handleDeleteLabel}
+                                                                className={cx('item_left')}
+                                                                onClick={() => {
+                                                                    localStorage.setItem('detailid', label.id);
+                                                                    window.location.href = '/detaillabel';
+                                                                }}
                                                             >
-                                                                <div
-                                                                    className={cx('delete_button_main', 'delete_color')}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faTrashCan} />
-                                                                    <p className={cx('delete_button_main_p')}>
-                                                                        Xóa nhãn
-                                                                    </p>
+                                                                <div className={cx('item_left_main')}>
+                                                                    <p>{label.name}</p>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div className={cx('item_right_edit')}>
-                                                            <div className={cx('delete_button')}>
-                                                                <div
-                                                                    className={cx('delete_button_main', 'edit_color')}
-                                                                    onClick={() => {
-                                                                        window.location.href = '/editlabel';
-                                                                    }}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faPenToSquare} />
-                                                                    <p className={cx('delete_button_main_p')}>
-                                                                        Sửa nhãn
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={cx('item_table')}>
-                                        <div className={cx('table_label')}>
-                                            <div className={cx('item_main')}>
-                                                <div
-                                                    className={cx('item_left')}
-                                                    onClick={() => {
-                                                        window.location.href = '/detaillabel';
-                                                    }}
-                                                >
-                                                    <div className={cx('item_left_main')}>
-                                                        <p>Khuôn mặt</p>
-                                                    </div>
-                                                </div>
-                                                <div className={cx('button_box')}>
-                                                    <div className={cx('item_right')}>
-                                                        <div className={cx('item_right_delete')}>
-                                                            <div className={cx('delete_button')}>
-                                                                <div
-                                                                    className={cx('delete_button_main', 'delete_color')}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faTrashCan} />
-                                                                    <p className={cx('delete_button_main_p')}>
-                                                                        Xóa nhãn
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className={cx('item_right_edit')}>
-                                                            <div className={cx('delete_button')}>
-                                                                <div
-                                                                    className={cx('delete_button_main', 'edit_color')}
-                                                                    onClick={() => {
-                                                                        window.location.href = '/editlabel';
-                                                                    }}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faPenToSquare} />
-                                                                    <p className={cx('delete_button_main_p')}>
-                                                                        Sửa nhãn
-                                                                    </p>
+                                                            <div className={cx('button_box')}>
+                                                                <div className={cx('item_right')}>
+                                                                    <div className={cx('item_right_delete')}>
+                                                                        <div
+                                                                            className={cx('delete_button')}
+                                                                            onClick={() => {
+                                                                                handleDeleteLabel(label.id);
+                                                                            }}
+                                                                        >
+                                                                            <div
+                                                                                className={cx(
+                                                                                    'delete_button_main',
+                                                                                    'delete_color',
+                                                                                )}
+                                                                            >
+                                                                                <FontAwesomeIcon icon={faTrashCan} />
+                                                                                <p
+                                                                                    className={cx(
+                                                                                        'delete_button_main_p',
+                                                                                    )}
+                                                                                >
+                                                                                    Xóa nhãn
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className={cx('item_right_edit')}>
+                                                                        <div className={cx('delete_button')}>
+                                                                            <div
+                                                                                className={cx(
+                                                                                    'delete_button_main',
+                                                                                    'edit_color',
+                                                                                )}
+                                                                                onClick={() => {
+                                                                                    window.location.href = '/editlabel';
+                                                                                    localStorage.setItem(
+                                                                                        'editid',
+                                                                                        label.id,
+                                                                                    );
+                                                                                }}
+                                                                            >
+                                                                                <FontAwesomeIcon icon={faPenToSquare} />
+                                                                                <p
+                                                                                    className={cx(
+                                                                                        'delete_button_main_p',
+                                                                                    )}
+                                                                                >
+                                                                                    Sửa nhãn
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={cx('item_table')}>
-                                        <div className={cx('table_label')}>
-                                            <div className={cx('item_main')}>
-                                                <div
-                                                    className={cx('item_left')}
-                                                    onClick={() => {
-                                                        window.location.href = '/detaillabel';
-                                                    }}
-                                                >
-                                                    <div className={cx('item_left_main')}>
-                                                        <p>Khuôn mặt</p>
-                                                    </div>
-                                                </div>
-                                                <div className={cx('button_box')}>
-                                                    <div className={cx('item_right')}>
-                                                        <div className={cx('item_right_delete')}>
-                                                            <div className={cx('delete_button')}>
-                                                                <div
-                                                                    className={cx('delete_button_main', 'delete_color')}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faTrashCan} />
-                                                                    <p className={cx('delete_button_main_p')}>
-                                                                        Xóa nhãn
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className={cx('item_right_edit')}>
-                                                            <div className={cx('delete_button')}>
-                                                                <div
-                                                                    className={cx('delete_button_main', 'edit_color')}
-                                                                    onClick={() => {
-                                                                        window.location.href = '/editlabel';
-                                                                    }}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faPenToSquare} />
-                                                                    <p className={cx('delete_button_main_p')}>
-                                                                        Sửa nhãn
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className={cx('item_table')}>
-                                        <div className={cx('table_label')}>
-                                            <div className={cx('item_main')}>
-                                                <div
-                                                    className={cx('item_left')}
-                                                    onClick={() => {
-                                                        window.location.href = '/detaillabel';
-                                                    }}
-                                                >
-                                                    <div className={cx('item_left_main')}>
-                                                        <p>Khuôn mặt</p>
-                                                    </div>
-                                                </div>
-                                                <div className={cx('button_box')}>
-                                                    <div className={cx('item_right')}>
-                                                        <div className={cx('item_right_delete')}>
-                                                            <div className={cx('delete_button')}>
-                                                                <div
-                                                                    className={cx('delete_button_main', 'delete_color')}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faTrashCan} />
-                                                                    <p className={cx('delete_button_main_p')}>
-                                                                        Xóa nhãn
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className={cx('item_right_edit')}>
-                                                            <div className={cx('delete_button')}>
-                                                                <div
-                                                                    className={cx('delete_button_main', 'edit_color')}
-                                                                    onClick={() => {
-                                                                        window.location.href = '/editlabel';
-                                                                    }}
-                                                                >
-                                                                    <FontAwesomeIcon icon={faPenToSquare} />
-                                                                    <p className={cx('delete_button_main_p')}>
-                                                                        Sửa nhãn
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                            );
+                                        })}
                                 </div>
                             </div>
                         </div>
