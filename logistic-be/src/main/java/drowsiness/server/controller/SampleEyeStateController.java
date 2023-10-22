@@ -39,14 +39,33 @@ public class SampleEyeStateController {
 	}
 	
 	@PostMapping("/addSampleEyeState")
-	public boolean addNewSampleEyeState(@RequestBody SampleEyeState sample) {
-		return service.AddNewSampleEyeState(sample);
+	public ResponseEntity<?> addNewSampleEyeState(@RequestBody SampleEyeState sample) {
+		Map<String, Boolean> status = new HashMap<>();
+		status.put("status", service.AddNewSampleEyeState(sample));
+		return ResponseEntity.ok(status);
 	}
 	
 	@PostMapping("/updateSampleEyeState")
 	public ResponseEntity<?> updateSampleEyeState(@RequestBody SampleEyeState sample) {
 		Map<String, Boolean> status = new HashMap<>();
 		status.put("status", service.updateSampleEyeState(sample));
+		return ResponseEntity.ok(status);
+	}
+	
+	@PostMapping("/deleteSampleEyeState")
+	public ResponseEntity<?> deleteSample(@RequestBody List<Map<String, Integer>> listId) {
+		Map<String, Boolean> status = new HashMap<>();
+		boolean ok = false;
+//		System.out.println(listId.toString());
+		try {
+			for (Map<String, Integer> item : listId) {
+				service.deleteSampleEyeStateById(item.get("id"));
+			}
+			ok = true;
+		} catch (Exception e) {
+			ok = false;
+		}
+		status.put("status", ok);
 		return ResponseEntity.ok(status);
 	}
 }

@@ -40,14 +40,33 @@ public class SampleFaceDetectController {
 	}
 	
 	@PostMapping("/addSampleFaceDetect")
-	public boolean addNewSampleFaceDetect(@RequestBody SampleFaceDetect sample) {
-		return service.AddNewSampleFaceDetect(sample);
+	public ResponseEntity<?> addNewSampleFaceDetect(@RequestBody SampleFaceDetect sample) {
+		Map<String, Boolean> status = new HashMap<>();
+		status.put("status", service.AddNewSampleFaceDetect(sample));
+		return ResponseEntity.ok(status);
 	}
 	
 	@PostMapping("/updateSampleFaceDetect")
 	public ResponseEntity<?> updateSampleFaceDetect(@RequestBody SampleFaceDetect sample) {
 		Map<String, Boolean> status = new HashMap<>();
 		status.put("status", service.updateSampleFaceDetect(sample));
+		return ResponseEntity.ok(status);
+	}
+	
+	@PostMapping("/deleteSampleFaceDetect")
+	public ResponseEntity<?> deleteSample(@RequestBody List<Map<String, Integer>> listId) {
+		Map<String, Boolean> status = new HashMap<>();
+		boolean ok = false;
+//		System.out.println(listId.toString());
+		try {
+			for (Map<String, Integer> item : listId) {
+				service.deleteSampleFaceDetectById(item.get("id"));
+			}
+			ok = true;
+		} catch (Exception e) {
+			ok = false;
+		}
+		status.put("status", ok);
 		return ResponseEntity.ok(status);
 	}
 }

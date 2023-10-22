@@ -1,12 +1,13 @@
 import './style.css'
-import face from '../../images/000_1OC3DT_jpg.rf.7d83eba8fc52d85ab05399f142df2189.jpg'
-import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { api_get_sample_eye_states, api_get_sample_face_detects } from '../../config/Api';
+import { api_delete_sample_eye_state, api_delete_sample_face_detect, api_get_sample_eye_states, api_get_sample_face_detects } from '../../config/Api';
 function MainSample() {
     const [typeSample, setTypeSample] = useState(null)
     const [samples, setSamples] = useState([])
+    const [checkbox, setCheckbox] = useState(false)
+    const [listId, setListId] = useState([])
+    const [filterSample, setFilterSample] = useState([])
     const navi = useNavigate();
 
     useEffect(() => {
@@ -18,14 +19,23 @@ function MainSample() {
         } else if (type === '2') {
             getSamples(api_get_sample_eye_states)
         }
+        setFilterSample([])
     }, [])
 
+    const handleSearch = (e) => {
+        let key = e.target.value
+        const sampleSearch = samples.filter((sample) =>
+            sample.name.toLowerCase().includes(key.toLowerCase())
+        )
+        setFilterSample(sampleSearch)
+    }
     const getSamples = (api) => {
         fetch(api)
             .then(response => response.json())
             .then(data => {
                 // console.log(data['data'])
                 setSamples(data)
+                setFilterSample(data)
             })
             .catch(err => console.log(err))
     }
@@ -36,10 +46,11 @@ function MainSample() {
         if (select === '1') {
             getSamples(api_get_sample_face_detects)
         } else if (select === '2') {
-            setSamples(api_get_sample_eye_states)
+            getSamples(api_get_sample_eye_states)
         } else {
             setSamples([])
         }
+        // console.log(samples)
     }
     const handleClickAdd = () => {
         if (typeSample === null) {
@@ -47,6 +58,74 @@ function MainSample() {
             return
         } else {
             navi('/add-sample')
+        }
+    }
+    const hanldClickSelect = () => {
+        const btn = document.querySelector(".btn_del")
+        if (checkbox === false) {
+            btn.style.background = 'linear-gradient(to right, #0984e3, #489aec)'
+        } else {
+            btn.style.background = '#68bef0'
+            setListId([])
+        }
+        setCheckbox(!checkbox)
+    }
+    const handleCheckbox = (e, sampleid) => {
+        if (e.target.checked) {
+            let list = [...listId]
+            list.push({ id: sampleid })
+            console.log(list)
+            setListId(list)
+        } else {
+            let list = [...listId]
+            const updatedList = list.filter(item => item.id !== sampleid);
+            // console.log(updatedList)
+            setListId(updatedList)
+        }
+    }
+    const handleClickDel = () => {
+        if (checkbox && listId.length !== 0) {
+            let api = ''
+            if (typeSample === '1') {
+                api = api_delete_sample_face_detect
+            } else if (typeSample === '2') {
+                api = api_delete_sample_eye_state
+            }
+            let confirm = window.confirm('Are you sure want to delete this Samples?');
+            if (confirm) {
+                console.log(listId)
+                fetch(api, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(listId)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        // console.log(data)
+                        if (data['status'] === true) {
+                            const updateSample = samples.filter(item => !listId.some(idObj => idObj.id === item.id));
+                            // console.log(updateSample);
+                            setSamples(updateSample)
+                            setListId([])
+                            alert('Delete sample success!')
+                        } else {
+                            alert('Delete sample false!')
+                        }
+
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    });
+            }
+
+        }
+    }
+    const handleMoveToSampleDetai = (sampleId) => {
+        console.log('aaa')
+        if (!checkbox) {
+            navi(`/sample/${sampleId}`)
         }
     }
     return (
@@ -65,25 +144,36 @@ function MainSample() {
             <div className="sample-controller">
                 <div className='btn-controller'>
                     <button className='btn-add btnEdit' onClick={handleClickAdd}>Add</button>
-                    <button className='btn-add btnEdit'>Delete</button>
-                    <button className='btn-add btnEdit'>Select</button>
+                    <button className='btnEdit btn_del' onClick={handleClickDel}>Delete</button>
+                    <button className='btn-add btnEdit' onClick={hanldClickSelect}>Select</button>
                 </div>
 
                 <div className="search-sample">
-                    <input type="text" placeholder="Tìm kiếm..." />
+                    <input type="text" placeholder="Tìm kiếm..." onChange={handleSearch} />
                     <button type="submit" className='btnEdit btn-search-edit'>Tìm</button>
                 </div>
             </div>
             <div className="sample-list-container">
                 <div className="sample-list">
                     {
-                        samples.map((sample) => (
-                            <Link to={`/sample/${sample.id}`}>
-                                <div className='sample-image'>
-                                    <img src={face} alt='face'></img>
-                                    <p>{sample.name}</p>
-                                </div>
-                            </Link>
+                        filterSample?.map((sample) => (
+                            // <Link to={`/sample/${sample.id}`}>
+                            <div className='sample-image' onClick={() => handleMoveToSampleDetai(sample.id)}>
+                                {checkbox ? (
+                                    <label class="round-checkbox">
+                                        <input type="checkbox" id="myCheckbox"
+                                            onChange={(e) => handleCheckbox(e, sample.id)} />
+                                        <span class="custom-checkbox"></span>
+                                    </label>
+                                ) : (
+                                    <div></div>
+                                )}
+
+
+                                <img src={sample?.urlImage} alt='face'></img>
+                                <p>{sample.name}</p>
+                            </div>
+                            // </Link>
                         ))
                     }
 

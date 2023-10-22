@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +31,7 @@ public class SampleFaceDetect {
 	private String urlImage;
 	private String description;
 	
-	@OneToMany(mappedBy = "sampleFaceDetect")
+	@OneToMany(mappedBy = "sampleFaceDetect",cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List<BoundingBox> boudingboxes = new ArrayList<>();
 }

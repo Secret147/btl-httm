@@ -1,4 +1,4 @@
-import avt from '../../images/000_1OC3DT_jpg.rf.7d83eba8fc52d85ab05399f142df2189.jpg'
+
 import './style.css'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
@@ -28,6 +28,7 @@ function SampleDetail() {
             fetch(api + id)
                 .then(response => response.json())
                 .then(data => {
+                    // console.log(data)
                     setSample(data)
                 })
                 .catch(err => console.log(err))
@@ -71,13 +72,35 @@ function SampleDetail() {
         } else {
             alert('Vui lòng điền đủ thông tin')
         }
-
     }
+    const handleCellValueChange = (rowIndex, field, value) => {
+        // Sao chép danh sách boundingBoxes và cập nhật giá trị của ô chỉnh sửa
+        const updatedBoundingBoxes = [...sample?.boudingboxes]
+        updatedBoundingBoxes[rowIndex] = {
+            ...updatedBoundingBoxes[rowIndex],
+            [field]: value
+        }
+        console.log(updatedBoundingBoxes)
+        setSample({ ...sample, boudingboxes: updatedBoundingBoxes })
+    };
+
+    const hanldAddLine = () => {
+        if (sample.boudingboxes) {
+            const updatedBoundingBoxes = [...sample?.boudingboxes]
+            updatedBoundingBoxes.push({})
+            setSample({ ...sample, boudingboxes: updatedBoundingBoxes })
+        } else {
+            const updatedBoundingBoxes = []
+            updatedBoundingBoxes.push({})
+            setSample({ ...sample, boudingboxes: updatedBoundingBoxes })
+        }
+
+    };
     return (
         <div className="sample-detail-container">
             <div className="sample-detail">
                 <div className='sample-image-detail'>
-                    <img src={avt} alt="img"></img>
+                    <img src={sample?.urlImage} alt="img"></img>
                 </div>
                 <div className="sample-inf-container">
                     <div className="sample-inf">
@@ -145,16 +168,29 @@ function SampleDetail() {
                                         {
                                             sample?.boudingboxes?.map((boundingbox, index) => (
                                                 <tr>
-                                                    <th scope="row">{index}</th>
-                                                    <td>{boundingbox.top_left_x}</td>
-                                                    <td>{boundingbox.top_left_y}</td>
-                                                    <td>{boundingbox.width}</td>
-                                                    <td>{boundingbox.height}</td>
+                                                    <th scope="row">{index + 1}</th>
+                                                    <td contentEditable
+                                                        onInput={(e) =>
+                                                            handleCellValueChange(index, 'top_left_x', e.target.textContent)
+                                                        }>{boundingbox.top_left_x}</td>
+                                                    <td contentEditable
+                                                        onInput={(e) =>
+                                                            handleCellValueChange(index, 'top_left_y', e.target.textContent)
+                                                        }>{boundingbox.top_left_y}</td>
+                                                    <td contentEditable
+                                                        onInput={(e) =>
+                                                            handleCellValueChange(index, 'width', e.target.textContent)
+                                                        }>{boundingbox.width}</td>
+                                                    <td contentEditable
+                                                        onInput={(e) =>
+                                                            handleCellValueChange(index, 'height', e.target.textContent)
+                                                        }>{boundingbox.height}</td>
                                                 </tr>
                                             ))
                                         }
                                     </tbody>
                                 </table>
+                                <button className="btnEdit" onClick={hanldAddLine}>Add new line</button>
                             </div>
                         ) : (
                             <div></div>

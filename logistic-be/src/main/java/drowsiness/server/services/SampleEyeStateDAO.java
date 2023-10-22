@@ -21,8 +21,11 @@ public class SampleEyeStateDAO {
 	}
 	public boolean AddNewSampleEyeState(SampleEyeState sp) {
 		try {
-			SampleEyeState sample = repo.save(sp);
-			return sample != null;
+			if (repo.findByName(sp.getName()) == null) {
+				SampleEyeState sample = repo.save(sp);
+				return sample != null;
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -38,5 +41,16 @@ public class SampleEyeStateDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public boolean deleteSampleEyeStateById(int id) {
+		boolean status = false;
+		try {
+			repo.deleteById(id);
+			status = true;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return status;
 	}
 }

@@ -114,6 +114,7 @@ button {
     height: fit-content;
     align-self: baseline;
     flex-basis: auto;
+    position: relative;
 }
 
 .sample-list-container {
@@ -130,6 +131,13 @@ button {
 .sample-image p {
     margin: 0;
     color: black;
+    /* Cho phép tự xuống dòng khi cần */
+    overflow: hidden;
+    white-space: nowrap;
+    /* Ngăn chữ xuống dòng */
+    width: 80%;
+    text-overflow: ellipsis;
+    /* Thêm dấu "..." khi nội dung quá dài */
 }
 
 .sample-image img {
@@ -173,6 +181,8 @@ button {
     flex-direction: column;
     width: 70%;
     margin-bottom: 20px;
+    max-height: 50vh;
+    overflow-y: auto;
 }
 
 .sample-inf-child lable {
@@ -247,4 +257,39 @@ button {
     display: flex;
     justify-content: flex-end;
     margin-right: 20px;
+}
+
+.round-checkbox {
+    /* display: none; */
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.custom-checkbox {
+    width: 15px;
+    height: 15px;
+    border: 2px solid #3e8cf8;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+}
+
+.custom-sample-image {
+    background-color: rgb(105, 173, 241, 0.3);
+}
+
+input[type="checkbox"] {
+    display: none;
+    /* Ẩn ô checkbox gốc */
+}
+
+input[type="checkbox"]:checked+.custom-checkbox {
+    background-color: #2549ea;
+    /* Đổi màu nền khi được chọn */
+}
+
+.btn_del {
+    background: #68bef0;
 }
