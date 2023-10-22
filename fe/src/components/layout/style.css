@@ -1,0 +1,35 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    width: 100vw;
+    height: 100vh;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow-x: hidden;
+    justify-content: center;
+    position: fixed;
+    /* background-color: aqua; */
+}
+
+.main-header-container {
+    height: 50px;
+    background: linear-gradient(to right, #0984e3, #489aec);
+    width: 100%;
+}
+
+.main-outlet-container {
+    /* background-color: aquamarine; */
+    min-height: 400px;
+}
+
+.main-footer-container {
+    height: 100px;
+    height: fit-content;
+}
