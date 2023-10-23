@@ -1,7 +1,9 @@
 from fastapi import FastAPI, WebSocket
 import base64
-from detect import run
+from detect import run as detect
 import os
+from train import run as train
+import shutil
 
 app = FastAPI()
 
@@ -41,6 +43,28 @@ async def ws_detect(websocket: WebSocket):
         data_uri = await websocket.receive_text()
         input_file_path = save_base64_as_file(data_uri, "file")
 
-        await run(weights="yolov5s.pt", source=input_file_path, nosave=True, name="", websocket=websocket)
+        await detect(weights="yolov5s.pt", source=input_file_path, nosave=True, name="", websocket=websocket)
 
         os.remove(input_file_path)
+
+        websocket.close()
+
+@app.websocket("/ws/train-face")
+async def ws_train_face(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        model_name = await websocket.receive_text()
+
+        train(data="data-face.yaml", weights="yolov5s.pt", batch_size=16, epochs=1)
+        await websocket.send_text("Finish training")
+        await websocket.close()
+
+@app.websocket("/ws/train-eyes")
+async def ws_train_face(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        model_name = await websocket.receive_text()
+
+        train(data="data-eyes.yaml", weights="yolov5s.pt", batch_size=16, epochs=1)
+        await websocket.send_text("Finish training")
+        await websocket.close()
