@@ -68,3 +68,14 @@ async def ws_train_face(websocket: WebSocket):
         train(data="data-eyes.yaml", weights="yolov5s.pt", batch_size=16, epochs=1)
         await websocket.send_text("Finish training")
         await websocket.close()
+
+        
+@app.websocket("/ws/train-test")
+async def ws_train_face(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        model_name = await websocket.receive_text()
+
+        result = train(data="coco128.yaml", weights="yolov5s.pt", batch_size=16, epochs=1)
+        await websocket.send_text(f"Precism: ${result[0]} and Recall: ${result[1]}")
+        await websocket.close()
