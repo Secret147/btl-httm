@@ -148,7 +148,12 @@ function SampleDetail() {
                                     }
                                 >
                                     {labels.map((label) => (
-                                        <option value={label.id} className="option-item" selected={label.id === 1}>
+                                        <option
+                                            value={label.id}
+                                            className="option-item"
+                                            selected={label.id === 1}
+                                            key={label.id}
+                                        >
                                             {label.name}
                                         </option>
                                     ))}
@@ -188,7 +193,7 @@ function SampleDetail() {
                                 </thead>
                                 <tbody>
                                     {sample?.boudingboxes?.map((boundingbox, index) => (
-                                        <tr>
+                                        <tr key={sample.id}>
                                             <th scope="row">{index + 1}</th>
                                             <td
                                                 contentEditable

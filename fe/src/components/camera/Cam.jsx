@@ -1,25 +1,23 @@
-import React, { useEffect, useRef, useState } from "react";
-import './style.css'
+import React, { useEffect, useRef, useState } from 'react';
+import './style.css';
 function Cam() {
     const videoRef = useRef();
     const socketRef = useRef(null);
-    const [isConnect, setIsConnect] = useState(false)
+    const [isConnect, setIsConnect] = useState(false);
     const initSocket = () => {
         if (socketRef.current === null || !isConnect) {
-            console.log('connecting...')
+            console.log('connecting...');
             // Tạo kết nối WebSocket
-            socketRef.current = new WebSocket("ws://localhost:8000/video");
+            socketRef.current = new WebSocket('ws://localhost:8000/video');
 
             socketRef.current.onopen = () => {
-                console.log("Connected to server");
-                setIsConnect(true)
+                console.log('Connected to server');
+                setIsConnect(true);
             };
         }
-
-    }
+    };
     useEffect(() => {
-
-        initSocket()
+        initSocket();
 
         socketRef.current.onmessage = async (event) => {
             const base64Data = event.data;
@@ -31,33 +29,34 @@ function Cam() {
             // videoRef.current.onloadedmetadata = () => {
             //     videoRef.current.play();
             // };
-
         };
 
         socketRef.current.onclose = () => {
-            setIsConnect(false)
-            console.log("Disconnected from server");
-            initSocket()
+            setIsConnect(false);
+            console.log('Disconnected from server');
         };
 
         return () => {
             socketRef.current.close();
-            console.log("Disconnected from server");
-            setIsConnect(false)
+            console.log('Disconnected from server');
+            setIsConnect(false);
         };
-
     }, []);
 
     return (
-        <div className='camara-controller-custom'>
+        <div className="camara-controller-custom">
             {/* <video ref={videoRef} autoPlay controls /> */}
-            <img ref={videoRef} alt="vd" style={{
-                width: '100%', // Video chiếm toàn bộ chiều rộng của div
-                height: '100%',
-                objectFit: 'cover'
-            }}></img>
+            <img
+                ref={videoRef}
+                alt="vd"
+                style={{
+                    width: '100%', // Video chiếm toàn bộ chiều rộng của div
+                    height: '100%',
+                    objectFit: 'cover',
+                }}
+            ></img>
         </div>
     );
 }
 
-export default Cam
+export default Cam;
