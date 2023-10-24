@@ -1,4 +1,5 @@
 import './style.css'
+import Cam from '../camera/Cam';
 function Home() {
 
     return (
@@ -7,7 +8,7 @@ function Home() {
                 <div className='edit-camera-container'>
                     <h3 className='name-title'>Camera</h3>
                     <div className='camera'>
-
+                        <Cam></Cam>
                     </div>
                 </div>
 

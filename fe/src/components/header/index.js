@@ -17,8 +17,11 @@ function Header() {
                     </div>
                 </li>
                 <li>
-                    <i class="fa-solid fa-camera"></i>
-                    Camera
+                    <Link to={`/`}>
+                        <i class="fa-solid fa-camera"></i>
+                        Camera
+                    </Link>
+
                 </li>
                 <li>
                     <i class="fa-solid fa-cloud-arrow-up"></i>

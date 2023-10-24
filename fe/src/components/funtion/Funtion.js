@@ -8,7 +8,7 @@ export function getListBoundingBox(labels) {
     // Lặp qua từng dòng và chuyển đổi thành đối tượng JavaScript
     for (let line of lines) {
         const values = line.trim().split(' '); // Chia thành các giá trị
-        const label = Number(values[0]);
+        // const label = Number(values[0]);
         const top_left_x = Number(values[1]);
         const top_left_y = Number(values[2]);
         const width = Number(values[3]);
