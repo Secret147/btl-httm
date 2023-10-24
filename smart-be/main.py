@@ -3,7 +3,7 @@ import base64
 from detect import run as detect
 import os
 from train import run as train
-import shutil
+import mysql.connector
 
 app = FastAPI()
 
@@ -34,6 +34,23 @@ def save_base64_as_file(data_uri, file_path):
 def read_root():
     return {"Hello": "World"}
 
+@app.get("/all-model")
+def get_all_models():
+    db = mysql.connector.connect(
+            host="localhost",
+            username="root",
+            password="doanthephuc",
+            database="httm"
+        )
+    cursor = db.cursor()
+    query = "SELECT * FROM model_test"
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return {"message": results}
 
 @app.websocket("/ws/detect")
 async def ws_detect(websocket: WebSocket):
@@ -76,6 +93,7 @@ async def ws_train_face(websocket: WebSocket):
     while True:
         model_name = await websocket.receive_text()
 
-        result = train(data="coco128.yaml", weights="yolov5s.pt", batch_size=16, epochs=1)
-        await websocket.send_text(f"Precism: ${result[0]} and Recall: ${result[1]}")
-        await websocket.close()
+        train(data="coco128.yaml", weights="yolov5s.pt", batch_size=16, epochs=1, model_name=model_name)
+        break
+    await websocket.send_text("done")
+    await websocket.close()
