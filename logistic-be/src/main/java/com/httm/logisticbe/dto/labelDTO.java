@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class labelDTO {
-	private Long id;
+	private int id;
 	private String name;
 	private String description;
 	private Date createAt;

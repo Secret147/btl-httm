@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.httm.logisticbe.entity.labelEntity;
 
-public interface labelRepository extends JpaRepository<labelEntity, Long> {
+public interface labelRepository extends JpaRepository<labelEntity, Integer > {
 
 }

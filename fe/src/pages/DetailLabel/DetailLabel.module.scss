@@ -71,6 +71,20 @@
     border: 1px solid var(--border);
     border-radius: 4px;
 }
+.sample_label_item:hover {
+    background-color: rgb(223 229 230);
+}
+.sample_infor_item {
+    background: var(--back);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    p {
+        color: white;
+        font-size: 24px;
+        font-weight: 700;
+        padding: 16px;
+    }
+}
 .item_left {
     display: flex;
     width: 80%;
@@ -129,13 +143,13 @@
     background: white;
     display: flex;
     border-radius: 4px;
-    padding: 16px;
+    padding: 20px;
 }
 .left {
     width: 50%;
     img {
         height: 600px;
-        width: 90%;
+        width: 95%;
         border: 2px solid var(--border);
     }
 }
@@ -143,14 +157,10 @@
     width: 50%;
 }
 .sample_right_main {
-    border: 2px solid var(--border);
-
     height: 600px;
-    p {
-        font-size: 18px;
-        font-weight: 700;
-        margin: 16px 0 0 16px;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .sample_right_name {
     display: flex;
@@ -200,4 +210,30 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: black;
+}
+.icon_route_container {
+    height: 600px;
+    width: 95%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.type_rotate {
+    border: 2px solid var(--border);
+}
+.icon-container {
+    display: inline-block; /* Đảm bảo biểu tượng được hiển thị theo chiều ngang */
+    animation: spin 2s linear infinite; /* Áp dụng hiệu ứng xoay */
+    font-size: 48px;
+    color: var(--border);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Góc xoay ban đầu */
+    }
+    100% {
+        transform: rotate(360deg); /* Góc xoay sau một vòng xoay đầy đủ (360 độ) */
+    }
 }

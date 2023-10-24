@@ -1,5 +1,6 @@
 package com.httm.logisticbe.api;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.httm.logisticbe.dto.labelDTO;
@@ -36,13 +38,24 @@ public class labelAPI {
 		}
 	}
 	@GetMapping("/label/{id}")
-	public ResponseEntity<?> getLabel(@PathVariable("id") Long id){
+	public ResponseEntity<?> getLabel(@PathVariable("id") int id){
 		if(labelSe.getLabel(id)!=null) {
 			return ResponseEntity.ok(labelSe.getLabel(id));
 		}
 		else {
 			return ResponseEntity.badRequest().body("Not found label");
 		}
+	}
+	@GetMapping("/searchlabel")
+	public ResponseEntity<?> searchLabel(@RequestParam("key") String key){
+		List<labelEntity> listSearch= labelSe.searchLabel(key);
+		if(listSearch!=null) {
+			return ResponseEntity.ok(listSearch);
+		}
+		else {
+			return ResponseEntity.badRequest().body("Không tìm thấy nhãn");
+		}
+		
 	}
 	@PostMapping("/newlabel")
 	public ResponseEntity<?> saveLabel(@RequestBody labelDTO label){
@@ -56,7 +69,7 @@ public class labelAPI {
 		return ResponseEntity.ok("Update success!");
 	}
 	@DeleteMapping("/deletelabel/{id}")
-	public ResponseEntity<?> deleteLabel(@PathVariable("id") Long id){
+	public ResponseEntity<?> deleteLabel(@PathVariable("id") int id){
 		labelSe.deleteLabel(id);
 		return ResponseEntity.ok("Delete success!");
 	}

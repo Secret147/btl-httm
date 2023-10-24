@@ -1,4 +1,4 @@
-import { faArrowLeft, faCancel, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faCancel, faRotateRight, faXmark } from '@fortawesome/free-solid-svg-icons';
 import styles from './DetailLabel.module.scss';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,12 +13,36 @@ function DatailLabel() {
         name: '',
         description: '',
     });
+    const [sample, setSample] = useState({
+        name: '',
+        extension: '',
+        train: '',
+        size: '',
+        urlImage: '',
+        description: '',
+    });
+
+    const [samples, setSamples] = useState([]);
+
+    const getAllSamplebyLabelid = async () => {
+        const res = await axios.get(`/sample/allsample/${localStorage.getItem('detailid')}`);
+        setSamples(res.data);
+    };
     const getLabel = async () => {
-        const res = await axios.get(`/label/${localStorage.getItem('detailid')}`);
+        const res = await axios.get(`/label/label/${localStorage.getItem('detailid')}`);
         setLabel(res.data);
+    };
+    const getSample = async (id) => {
+        const res = await axios.get(`/sample/onesample/${id}`);
+        setSample(res.data);
+    };
+    const handleDetail = (id) => {
+        setDetail(true);
+        getSample(id);
     };
     useEffect(() => {
         getLabel();
+        getAllSamplebyLabelid();
     }, []);
 
     return (
@@ -36,19 +60,36 @@ function DatailLabel() {
                     <div className={cx('detail_sample_item_container')}>
                         <div className={cx('detail_sample_item_main')}>
                             <div className={cx('left')}>
-                                <img src="https://i.pinimg.com/originals/ce/0c/21/ce0c2131a67c5d8f9f99a68a1ebfe744.jpg"></img>
-                                <div className={cx('sample_img_name')}>
-                                    <p>hinh1.jpg</p>
-                                </div>
+                                {sample.urlImage ? (
+                                    <img src={sample.urlImage}></img>
+                                ) : (
+                                    <div className={cx('icon_route_container', 'type_rotate')}>
+                                        <div className={cx('icon-container')}>
+                                            <FontAwesomeIcon icon={faRotateRight} />
+                                        </div>
+                                    </div>
+                                )}
+                                <div className={cx('sample_img_name')}></div>
                             </div>
                             <div className={cx('right')}>
                                 <div className="sample_right">
                                     <div className={cx('sample_right_main')}>
-                                        <p>0.04854 0.248888 0.002485 0.011125</p>
+                                        <div className={cx('sample_infor_item')}>
+                                            <p>
+                                                Tên mẫu: {sample.name}.{sample.extension}
+                                            </p>
+                                        </div>
+                                        <div className={cx('sample_infor_item')}>
+                                            <p>Định dạng: {sample.extension}</p>
+                                        </div>
+                                        <div className={cx('sample_infor_item')}>
+                                            <p>Kích thước: {sample.size}</p>
+                                        </div>
+                                        <div className={cx('sample_infor_item')}>
+                                            <p>Trạng thái: {sample.train ? 'Đã train' : 'Chưa train'}</p>
+                                        </div>
                                     </div>
-                                    <div className={cx('sample_right_name')}>
-                                        <p>label1.txt</p>
-                                    </div>
+                                    <div className={cx('sample_right_name')}></div>
                                 </div>
                             </div>
                         </div>
@@ -79,84 +120,78 @@ function DatailLabel() {
                                         <div className="sample_label_main_body">
                                             <div className={cx('sample_label_header')}>
                                                 <div className={cx('sample_label_header_main')}>
-                                                    <p>Danh sách ảnh có nhãn là {label.name}</p>
+                                                    <p>Danh sách ảnh có nhãn {label.name}</p>
                                                 </div>
                                             </div>
                                             <div className={cx('sample_label_list')}>
                                                 <div className={cx('sample_label_list_main')}>
                                                     <div className={cx('sample_label_table')}>
-                                                        <div className={cx('table_box')}>
-                                                            <div
-                                                                className={cx('sample_label_item')}
-                                                                onClick={() => {
-                                                                    setDetail(true);
-                                                                }}
-                                                            >
-                                                                <div className={cx('item_left')}>
-                                                                    <img src="https://i.pinimg.com/originals/ce/0c/21/ce0c2131a67c5d8f9f99a68a1ebfe744.jpg"></img>
-                                                                    <div className={cx('img_name')}>
-                                                                        <p>hinh1.jpg</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className={cx('item_right')}>
-                                                                    <div className={cx('item_right_main')}>
-                                                                        <p>hinh1.txt</p>
-                                                                    </div>
+                                                        {samples.length > 0 ? (
+                                                            <div className={cx('table_box')}>
+                                                                {samples &&
+                                                                    samples.length > 0 &&
+                                                                    samples.map((sample) => {
+                                                                        return (
+                                                                            <div
+                                                                                className={cx('sample_label_item')}
+                                                                                onClick={() => {
+                                                                                    handleDetail(sample.id);
+                                                                                }}
+                                                                                key={sample.id}
+                                                                            >
+                                                                                <div className={cx('item_left')}>
+                                                                                    {sample.urlImage ? (
+                                                                                        <img
+                                                                                            src={sample.urlImage}
+                                                                                        ></img>
+                                                                                    ) : (
+                                                                                        <div
+                                                                                            className={cx(
+                                                                                                'icon_route_container',
+                                                                                            )}
+                                                                                        >
+                                                                                            <div
+                                                                                                className={cx(
+                                                                                                    'icon-container',
+                                                                                                )}
+                                                                                            >
+                                                                                                <FontAwesomeIcon
+                                                                                                    icon={faRotateRight}
+                                                                                                />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    )}
+                                                                                    <div className={cx('img_name')}>
+                                                                                        <p>
+                                                                                            {sample.name}.
+                                                                                            {sample.extension}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div className={cx('item_right')}>
+                                                                                    <div
+                                                                                        className={cx(
+                                                                                            'item_right_main',
+                                                                                        )}
+                                                                                    >
+                                                                                        <p>
+                                                                                            {sample.train
+                                                                                                ? 'Đã train'
+                                                                                                : 'Chưa train'}
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        );
+                                                                    })}
+                                                            </div>
+                                                        ) : (
+                                                            <div className={cx('icon_route_container')}>
+                                                                <div className={cx('icon-container')}>
+                                                                    <FontAwesomeIcon icon={faRotateRight} />
                                                                 </div>
                                                             </div>
-                                                            <div className={cx('sample_label_item')}>
-                                                                <div className={cx('item_left')}>
-                                                                    <img src="https://i.pinimg.com/originals/ce/0c/21/ce0c2131a67c5d8f9f99a68a1ebfe744.jpg"></img>
-                                                                    <div className={cx('img_name')}>
-                                                                        <p>hinh1.jpg</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className={cx('item_right')}>
-                                                                    <div className={cx('item_right_main')}>
-                                                                        <p>hinh1.txt</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className={cx('sample_label_item')}>
-                                                                <div className={cx('item_left')}>
-                                                                    <img src="https://i.pinimg.com/originals/ce/0c/21/ce0c2131a67c5d8f9f99a68a1ebfe744.jpg"></img>
-                                                                    <div className={cx('img_name')}>
-                                                                        <p>hinh1.jpg</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className={cx('item_right')}>
-                                                                    <div className={cx('item_right_main')}>
-                                                                        <p>hinh1.txt</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className={cx('sample_label_item')}>
-                                                                <div className={cx('item_left')}>
-                                                                    <img src="https://i.pinimg.com/originals/ce/0c/21/ce0c2131a67c5d8f9f99a68a1ebfe744.jpg"></img>
-                                                                    <div className={cx('img_name')}>
-                                                                        <p>hinh1.jpg</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className={cx('item_right')}>
-                                                                    <div className={cx('item_right_main')}>
-                                                                        <p>hinh1.txt</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className={cx('sample_label_item')}>
-                                                                <div className={cx('item_left')}>
-                                                                    <img src="https://i.pinimg.com/originals/ce/0c/21/ce0c2131a67c5d8f9f99a68a1ebfe744.jpg"></img>
-                                                                    <div className={cx('img_name')}>
-                                                                        <p>hinh1.jpg</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div className={cx('item_right')}>
-                                                                    <div className={cx('item_right_main')}>
-                                                                        <p>hinh1.txt</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             </div>

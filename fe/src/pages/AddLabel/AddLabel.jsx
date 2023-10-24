@@ -24,7 +24,7 @@ function AddLabel() {
         if (label.name === '') {
             alert('Vui long nhap ten nhan');
         } else {
-            const res = await axios.post('/newlabel', label);
+            const res = await axios.post('/label/newlabel', label);
             if (res.status === 200) {
                 alert(res.data);
                 setLabel({

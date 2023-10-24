@@ -15,7 +15,7 @@ function EditLabel() {
     });
 
     const getLabel = async () => {
-        const res = await axios.get(`/label/${localStorage.getItem('editid')}`);
+        const res = await axios.get(`/label/label/${localStorage.getItem('editid')}`);
         setLabel(res.data);
         console.log(res.data);
     };
@@ -27,7 +27,7 @@ function EditLabel() {
         setLabel({ ...label, [name]: value });
     };
     const handleUpdate = () => {
-        const res = axios.put('updatelabel', label);
+        const res = axios.put('/label/updatelabel', label);
         window.location.href = '/';
         localStorage.removeItem('editid');
     };

@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.httm.logisticbe.dto.labelDTO;
+import com.httm.logisticbe.entity.labelEntity;
 
 public interface labelService {
 	List<labelDTO> getAllLabel();
-	labelDTO getLabel(Long id);
+	labelDTO getLabel(int id);
 	void saveLabel(labelDTO label);
 	void updateLabel(labelDTO label);
-	void deleteLabel(Long id);
+	void deleteLabel(int id);
+	List<labelEntity> searchLabel(String key);
 	
 
 }

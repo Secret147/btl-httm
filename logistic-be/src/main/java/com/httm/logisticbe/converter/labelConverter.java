@@ -13,7 +13,7 @@ public class labelConverter {
 		labelDTO.setId(labelEntity.getId());
 		labelDTO.setName(labelEntity.getName());
 		labelDTO.setDescription(labelEntity.getDescription());
-		labelDTO.setCreateAt(labelEntity.getCreateAt());
+		
 		return labelDTO;
 	}
 	public labelEntity toEntity(labelDTO labelDTO) {
@@ -21,7 +21,7 @@ public class labelConverter {
 		labelEntity.setId(labelDTO.getId());
 		labelEntity.setName(labelDTO.getName());
 		labelEntity.setDescription(labelDTO.getDescription());
-		labelEntity.setCreateAt(labelDTO.getCreateAt());
+		
 		return labelEntity;
 	}
 
