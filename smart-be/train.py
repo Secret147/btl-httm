@@ -38,6 +38,7 @@ import torch.nn as nn
 import yaml
 from torch.optim import lr_scheduler
 from tqdm import tqdm
+import mysql.connector
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -73,9 +74,9 @@ GIT_INFO = check_git_info()
 
 
 def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictionary
-    save_dir, epochs, batch_size, weights, single_cls, evolve, data, cfg, resume, noval, nosave, workers, freeze = \
+    save_dir, epochs, batch_size, weights, single_cls, evolve, data, cfg, resume, noval, nosave, workers, freeze, model_name = \
         Path(opt.save_dir), opt.epochs, opt.batch_size, opt.weights, opt.single_cls, opt.evolve, opt.data, opt.cfg, \
-        opt.resume, opt.noval, opt.nosave, opt.workers, opt.freeze
+        opt.resume, opt.noval, opt.nosave, opt.workers, opt.freeze, opt.model_name
     callbacks.run('on_pretrain_routine_start')
 
     # Directories
@@ -434,6 +435,20 @@ def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictio
                         callbacks.run('on_fit_epoch_end', list(mloss) + list(results) + lr, epoch, best_fitness, fi)
 
         callbacks.run('on_train_end', last, best, epoch, results)
+
+    db = mysql.connector.connect(
+            host="103.200.23.179",
+            username="nroshin1_admin",
+            password="E%K[INB=@-q=",
+	    database="nroshin1_drowseness_alarm"
+        )
+    cursor = db.cursor()
+    query = "INSERT INTO model_test (time_created, pre, rec, model_name, path) VALUES (NOW(), %s, %s, %s, %s)"
+    query_data = (results[0], results[1], model_name, str(save_dir) + '\weights\best.pt')
+    cursor.execute(query, query_data)
+    db.commit()
+    cursor.close()
+    db.close()
 
     torch.cuda.empty_cache()
     return results
