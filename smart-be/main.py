@@ -17,6 +17,7 @@ origins = [
     "http://localhost",  # Thay đổi thành nguồn của ứng dụng React của bạn
     "http://localhost:3000",
     "http://localhost:5174",
+    "http://localhost:5173",
         # Đây là ví dụ URL của ứng dụng React
 ]
 

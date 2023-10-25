@@ -80,6 +80,7 @@ function ManagerLabel() {
                                     className={cx('alert_button_accept')}
                                     onClick={() => {
                                         deleteLabel();
+                                        alert('Delete success');
                                     }}
                                 >
                                     <p>Đồng ý</p>
