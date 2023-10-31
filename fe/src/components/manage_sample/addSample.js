@@ -10,20 +10,6 @@ function AddSample() {
     const [sample, setSample] = useState({})
     const [labels, setLabels] = useState([])
 
-    // const onDrop = useCallback(acceptedFiles => {
-    //     // acceptedFiles là một mảng chứa các đối tượng tệp đã được tải lên
-
-    //     acceptedFiles.forEach(file => {
-    //         console.log(file)
-    //         const { name, size } = file;
-    //         const extension = name.split('.').pop();
-
-    //         console.log(`Tên tệp: ${name}`);
-    //         console.log(`Kích thước: ${size} bytes`);
-    //         console.log(`Đuôi mở rộng: ${extension}`);
-    //     });
-    // }, []);
-    // const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
     useEffect(() => {
         let type = sessionStorage.getItem('typeSample')
@@ -118,7 +104,6 @@ function AddSample() {
             updatedBoundingBoxes.push({})
             setSample({ ...sample, boudingboxes: updatedBoundingBoxes })
         }
-
     };
     const handleClickRefresh = () => {
         if (typeSample === '2') {
@@ -126,7 +111,6 @@ function AddSample() {
         } else if (typeSample === '1') {
             setSample({ ...sample, name: '', size: '', extension: '', urlImage: undefined, boudingboxes: undefined });
         }
-
     }
 
     const handleFileChange = (event) => {
@@ -140,7 +124,13 @@ function AddSample() {
                     // Đọc nội dung của tệp và làm gì đó với nó (ví dụ: hiển thị nội dung)
                     const fileContent = e.target.result;
                     const objectItem = getListBoundingBox(fileContent)
-                    setSample({ ...sample, boudingboxes: objectItem })
+                    if (objectItem !== null) {
+                        setSample({ ...sample, boudingboxes: objectItem })
+                    } else {
+                        alert('Nội dung file txt không đúng định dạng')
+                        return
+                    }
+
                 };
                 reader.readAsText(file);
             } else {
@@ -248,19 +238,19 @@ function AddSample() {
                                                 <tr>
                                                     <th scope="row">{index + 1}</th>
                                                     <td contentEditable
-                                                        onInput={(e) =>
+                                                        onBlur={(e) =>
                                                             handleCellValueChange(index, 'top_left_x', e.target.textContent)
                                                         }>{boundingbox.top_left_x}</td>
                                                     <td contentEditable
-                                                        onInput={(e) =>
+                                                        onBlu={(e) =>
                                                             handleCellValueChange(index, 'top_left_y', e.target.textContent)
                                                         }>{boundingbox.top_left_y}</td>
                                                     <td contentEditable
-                                                        onInput={(e) =>
+                                                        onBlu={(e) =>
                                                             handleCellValueChange(index, 'width', e.target.textContent)
                                                         }>{boundingbox.width}</td>
                                                     <td contentEditable
-                                                        onInput={(e) =>
+                                                        onBlu={(e) =>
                                                             handleCellValueChange(index, 'height', e.target.textContent)
                                                         }>{boundingbox.height}</td>
                                                 </tr>

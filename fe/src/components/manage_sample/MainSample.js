@@ -105,9 +105,11 @@ function MainSample() {
                     .then(data => {
                         // console.log(data)
                         if (data['status'] === true) {
-                            const updateSample = samples.filter(item => !listId.some(idObj => idObj.id === item.id));
-                            // console.log(updateSample);
-                            setSamples(updateSample)
+                            if (typeSample === '1') {
+                                getSamples(api_get_sample_face_detects)
+                            } else if (typeSample === '2') {
+                                getSamples(api_get_sample_eye_states)
+                            }
                             setListId([])
                             alert('Delete sample success!')
                         } else {

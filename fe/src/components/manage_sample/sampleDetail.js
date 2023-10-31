@@ -170,19 +170,19 @@ function SampleDetail() {
                                                 <tr>
                                                     <th scope="row">{index + 1}</th>
                                                     <td contentEditable
-                                                        onInput={(e) =>
+                                                        onBlur={(e) =>
                                                             handleCellValueChange(index, 'top_left_x', e.target.textContent)
                                                         }>{boundingbox.top_left_x}</td>
                                                     <td contentEditable
-                                                        onInput={(e) =>
+                                                        onBlur={(e) =>
                                                             handleCellValueChange(index, 'top_left_y', e.target.textContent)
                                                         }>{boundingbox.top_left_y}</td>
                                                     <td contentEditable
-                                                        onInput={(e) =>
+                                                        onBlur={(e) =>
                                                             handleCellValueChange(index, 'width', e.target.textContent)
                                                         }>{boundingbox.width}</td>
                                                     <td contentEditable
-                                                        onInput={(e) =>
+                                                        onBlur={(e) =>
                                                             handleCellValueChange(index, 'height', e.target.textContent)
                                                         }>{boundingbox.height}</td>
                                                 </tr>
