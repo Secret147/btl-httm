@@ -12,7 +12,7 @@ public class sampleDTO {
     private String name;
     private String size;
     private String extension;
-    private boolean isTrain;
+    private int isTrain;
     private String urlImage;
     private String description;
     

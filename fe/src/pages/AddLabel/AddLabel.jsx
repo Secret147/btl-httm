@@ -5,13 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Back from '../../components/BackButton/Back';
 import axios from '../../service/axios';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function AddLabel() {
-    // const getData = async () => {
-    //     const data = await axios.get('/bill/all');
-    //     console.log(data.data);
-    // };
+    const history = useNavigate();
     const [label, setLabel] = useState({
         name: '',
         description: '',
@@ -26,13 +25,15 @@ function AddLabel() {
         } else {
             const res = await axios.post('/label/newlabel', label);
             if (res.status === 200) {
-                alert(res.data);
+                toast.success('Thêm nhãn thành công');
                 setLabel({
                     name: '',
                     description: '',
                 });
-                window.location.href = '/';
+
+                history('/');
             } else {
+                toast.error('Thêm nhãn thất bại');
                 console.log(res.data);
             }
         }

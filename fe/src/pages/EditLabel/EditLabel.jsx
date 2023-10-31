@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Back from '../../components/BackButton/Back';
 import { useEffect, useState } from 'react';
 import axios from '../../service/axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function EditLabel() {
@@ -13,7 +15,7 @@ function EditLabel() {
         name: '',
         description: '',
     });
-
+    const history = useNavigate();
     const getLabel = async () => {
         const res = await axios.get(`/label/label/${localStorage.getItem('editid')}`);
         setLabel(res.data);
@@ -26,10 +28,15 @@ function EditLabel() {
         const { name, value } = e.target;
         setLabel({ ...label, [name]: value });
     };
-    const handleUpdate = () => {
-        const res = axios.put('/label/updatelabel', label);
-        window.location.href = '/';
-        localStorage.removeItem('editid');
+    const handleUpdate = async () => {
+        const res = await axios.put('/label/updatelabel', label);
+        if (res.status === 200) {
+            toast.success('Nhãn đã được cập nhật');
+            history('/');
+            localStorage.removeItem('editid');
+        } else {
+            toast.error('Cập nhật nhãn thất bại!');
+        }
     };
     return (
         <div className={cx('container')}>

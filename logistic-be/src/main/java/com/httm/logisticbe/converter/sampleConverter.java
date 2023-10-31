@@ -13,6 +13,7 @@ public class sampleConverter {
 		sampleEntity.setId(sampleDTO.getId());
 		sampleEntity.setName(sampleDTO.getName());
 		sampleEntity.setSize(sampleDTO.getSize());
+		sampleEntity.setIsTrain(sampleDTO.getIsTrain());
 		sampleEntity.setExtension(sampleDTO.getExtension());
 		sampleEntity.setUrlImage(sampleDTO.getUrlImage());
 		sampleEntity.setDescription(sampleDTO.getDescription());
@@ -23,6 +24,7 @@ public class sampleConverter {
 		sampleDTO.setId(sampleEntity.getId());
 		sampleDTO.setName(sampleEntity.getName());
 		sampleDTO.setSize(sampleEntity.getSize());
+		sampleDTO.setIsTrain(sampleEntity.getIsTrain());
 		sampleDTO.setExtension(sampleEntity.getExtension());
 		sampleDTO.setUrlImage(sampleEntity.getUrlImage());
 		sampleDTO.setDescription(sampleEntity.getDescription());

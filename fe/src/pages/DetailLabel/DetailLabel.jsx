@@ -86,7 +86,7 @@ function DatailLabel() {
                                             <p>Kích thước: {sample.size}</p>
                                         </div>
                                         <div className={cx('sample_infor_item')}>
-                                            <p>Trạng thái: {sample.train ? 'Đã train' : 'Chưa train'}</p>
+                                            <p>Trạng thái: {sample.train !== 1 ? 'Đã train' : 'Chưa train'}</p>
                                         </div>
                                     </div>
                                     <div className={cx('sample_right_name')}></div>
@@ -175,7 +175,7 @@ function DatailLabel() {
                                                                                         )}
                                                                                     >
                                                                                         <p>
-                                                                                            {sample.train
+                                                                                            {sample.train !== 1
                                                                                                 ? 'Đã train'
                                                                                                 : 'Chưa train'}
                                                                                         </p>

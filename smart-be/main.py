@@ -12,6 +12,7 @@ import os
 from playsound import playsound
 import mysql.connector
 from train import run as train
+import json
 
 app = FastAPI()
 
@@ -79,7 +80,7 @@ def read_root():
 async def video_websocket(websocket: WebSocket):
     await websocket.accept()
     cap = cv2.VideoCapture(
-        1
+        0
     )  # 0 represents the default webcam, you can change it to another camera index if you have multiple cameras
 
     i = 0
@@ -89,6 +90,7 @@ async def video_websocket(websocket: WebSocket):
         while True:
             # Read a frame from the webcam
             ret, frame = cap.read()
+            data = {}
 
             # Perform inference on the frameq
             results = model(frame)
@@ -125,7 +127,8 @@ async def video_websocket(websocket: WebSocket):
                         2,
                     )
                     # save_face(face, i)
-                    print(f"state: {names[int(labele)]}")
+                    text = f"state: {names[int(labele)]}"
+                    data["mess"] = text
                     if labele == 1:
                         drowsiness += 1
                     else:
@@ -133,18 +136,32 @@ async def video_websocket(websocket: WebSocket):
                     i += 1
                     isOK = True
             # Display the frame
-            # if isOK == False:
+            if isOK == False:
+                data["mess"] = "Vui lòng điều chỉnh camera để tôi có thể thấy rõ bạn"
                 # speak("Vui lòng điều chỉnh camera để tôi có thể thấy rõ bạn")
-            # if drowsiness > alarm_max_frame:
+            if drowsiness > alarm_max_frame:
+                data[
+                    "mess"
+                ] = "Bạn đang có dấu hiệu buồn ngủ vui lòng dừng xe lại nghỉ ngơi"
                 # speak("Bạn đang có dấu hiệu buồn ngủ vui lòng dừng xe lại nghỉ ngơi")
             _, img_encoded = cv2.imencode(".jpg", frame)
-            img_bytes = img_encoded.tobytes()
             img_base64 = base64.b64encode(img_encoded.tobytes()).decode("utf-8")
-            await websocket.send_text(img_base64)
+            data["src"] = img_base64
+            await websocket.send_text(json.dumps(data))
+            # ping = await websocket.receive_text()
+            # print(ping)
+            # if ping == "close":
+            #     cap.release()
+            #     cv2.destroyAllWindows()
+            #     WebSocket.close()
+            #     break
     except (ConnectionClosedError, WebSocketDisconnect) as e:
         cap.release()
         cv2.destroyAllWindows()
-        # Mở camera và gửi video qua WebSocket
+    finally:
+        cap.release()
+        cv2.destroyAllWindows()
+    # Mở camera và gửi video qua WebSocket
 
 @app.websocket("/ws/detect")
 async def ws_detect(websocket: WebSocket):

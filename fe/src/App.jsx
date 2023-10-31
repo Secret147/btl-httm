@@ -3,11 +3,27 @@ import { publicRoutes } from './routes/route';
 
 import { Fragment } from 'react';
 import DefaultLayout from './layouts/DefaultLayout/DefaultLayout';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     return (
         <Router>
             <div className="App">
+                <div position="bottom-right">
+                    <ToastContainer
+                        position="bottom-center"
+                        autoClose={3000}
+                        hideProgressBar={false}
+                        newestOnTop={false}
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="light"
+                    />
+                </div>
                 <Routes>
                     {publicRoutes.map((route, index) => {
                         const Page = route.component;

@@ -10,8 +10,9 @@ import {
     faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import Back from '../../components/BackButton/Back';
 import axios from '../../service/axios';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 
@@ -23,6 +24,7 @@ function ManagerLabel() {
     const [labelSearch, setLabelSearch] = useState('');
     const [listSearch, setListSearch] = useState([]);
     const [checkDelete, setCheckDelete] = useState(false);
+    const history = useNavigate();
 
     const getAllLabel = async () => {
         try {
@@ -51,8 +53,10 @@ function ManagerLabel() {
         const res = await axios.delete(`/label/deletelabel/${deleteId}`);
         if (res.status === 200) {
             setDeleteId(null);
+
             setAlert(false);
             getAllLabel();
+            toast.success('Xóa nhãn thành công');
         } else {
             alert('Delete fail!');
         }
@@ -115,7 +119,7 @@ function ManagerLabel() {
                                                         className={cx('search_box_item')}
                                                         onClick={() => {
                                                             localStorage.setItem('detailid', item.id);
-                                                            window.location.href = '/detaillabel';
+                                                            history('/detaillabel');
                                                         }}
                                                     >
                                                         <p>{item.name}</p>
@@ -157,7 +161,7 @@ function ManagerLabel() {
                                                                 className={cx('item_left')}
                                                                 onClick={() => {
                                                                     localStorage.setItem('detailid', label.id);
-                                                                    window.location.href = '/detaillabel';
+                                                                    history('/detaillabel');
                                                                 }}
                                                             >
                                                                 <div className={cx('item_left_main')}>
@@ -237,7 +241,7 @@ function ManagerLabel() {
                 <div
                     className={cx('item_add')}
                     onClick={() => {
-                        window.location.href = '/addlabel';
+                        history('/addlabel');
                     }}
                 >
                     <div className={cx('add_button_main')}>

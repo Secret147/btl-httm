@@ -3,8 +3,7 @@
     justify-content: center;
     align-items: center;
     min-height: 450px;
-    margin-bottom: 38px;
-    height: 76vh;
+    margin-bottom: 10px;
     /* background-color: #0976e3; */
 }
 
@@ -29,13 +28,12 @@
 .edit-camera-container {
     position: absolute;
     width: 100%;
-    height: 100%;
     top: 0;
 }
 
 .camera {
     background-color: black;
-    height: 410px;
+    height: 380px;
 }
 
 .log-container {
@@ -57,7 +55,14 @@
 }
 
 .log {
-    height: 410px;
+    height: 380px;
     overflow-y: auto;
     background-color: #e0dad8;
+    scroll-snap-type: y mandatory;
+}
+
+.camara-controller-custom {
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
